@@ -1,10 +1,10 @@
 package ro.uvt.info.designpatternslab;
 
-//pasi pentru declararea unei clase
-//public class Nume + (optional) implements daca mosteneste
-//private parametrii
-//creezi constructor public cu parametrii, atribuind fiecarui parametru valoarea ce ar luao
-//creezi prin @Override o functie (publica, daca e refolosita), in cazul nostru doar printam toti parametrii
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor(force = true)
 public class Table extends Element {
     private String titlu;
     public Table(String titlu){

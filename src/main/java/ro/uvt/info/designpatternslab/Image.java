@@ -1,12 +1,11 @@
 package ro.uvt.info.designpatternslab;
 
-import java.util.concurrent.TimeUnit;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 
-//pasi pentru declararea unei clase
-//public class Nume + (optional) implements daca mosteneste
-//private parametrii
-//creezi constructor public cu parametrii, atribuind fiecarui parametru valoarea ce ar luao
-//creezi prin @Override o functie, in cazul nostru doar printam toti parametrii
+import java.util.concurrent.TimeUnit;
+@Entity
+@NoArgsConstructor(force = true)
 public class Image extends Element implements Picture {
     private String url;
     public Image(String url) {

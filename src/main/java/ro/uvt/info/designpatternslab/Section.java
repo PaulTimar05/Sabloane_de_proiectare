@@ -1,15 +1,22 @@
 package ro.uvt.info.designpatternslab;
 
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@NoArgsConstructor(force = true)
 public class Section extends Element {
+    @Setter
     @Getter
     protected String title;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OrderBy("id")
     protected List<Element> children = new ArrayList<>();
-
     public Section(String title) {
         this.title = title;
     }

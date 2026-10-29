@@ -1,15 +1,18 @@
 package ro.uvt.info.designpatternslab;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-//pasi pentru declararea unei clase
-//public class Nume + (optional) implements daca mosteneste
-//private parametrii
-//creezi constructor public cu parametrii, atribuind fiecarui parametru valoarea ce ar luao
-//creezi prin @Override o functie (publica, daca e refolosita), in cazul nostru doar printam toti parametrii
+@Entity
+@NoArgsConstructor(force = true)
+
 public class Paragraph extends Element {
     @Getter
     private String text;
+    @Transient
+
     private AlignStrategy textAlignment;
     public Paragraph(String text) {
         this.text = text;
