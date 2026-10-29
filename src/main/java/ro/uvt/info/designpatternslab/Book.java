@@ -3,13 +3,11 @@ package ro.uvt.info.designpatternslab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book {
-    private String title;
-    private List<Author> authors = new ArrayList<>();
-    private List<Element> content = new ArrayList<>();
+public class Book extends Section {
+    private final List<Author> authors = new ArrayList<>();
 
     public Book(String title) {
-        this.title = title;
+        super(title);
     }
 
     public void addAuthor(Author author) {
@@ -17,17 +15,20 @@ public class Book {
     }
 
     public void addContent(Element e) {
-        content.add(e);
+        add(e);
     }
 
-    public void print() {
-        System.out.println("Book: " + title);
+    public void render() {
+        System.out.println("Book: " + getTitle());
         System.out.println("Authors:");
         for (Author a : authors) {
             a.print();
         }
-        for (Element e : content) {
-            e.print();
-        }
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);    // aici ajunge la visit(Book), nu visit(Section)
+        acceptChildren(visitor);
     }
 }

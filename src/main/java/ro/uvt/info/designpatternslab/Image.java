@@ -17,9 +17,13 @@ public class Image extends Element implements Picture {
             e.printStackTrace();
         }
     }
+    public void render() {
+            System.out.println("Paragraph: " + url);
+    }
+
     @Override
-    public void print(){
-        System.out.println("Link Url Imagine: " + url);
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
     @Override
     public String url() {

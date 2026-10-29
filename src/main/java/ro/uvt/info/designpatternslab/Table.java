@@ -10,8 +10,13 @@ public class Table extends Element {
     public Table(String titlu){
         this.titlu = titlu;
     }
+
+    public void render() {
+        System.out.println("Paragraph: " + titlu);
+    }
+
     @Override
-    public void print(){
-        System.out.println("Titlu: " + titlu);
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

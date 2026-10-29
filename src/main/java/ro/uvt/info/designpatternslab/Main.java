@@ -2,31 +2,47 @@ package ro.uvt.info.designpatternslab;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        long startTime = System.currentTimeMillis();
-        ImageProxy img1 = new ImageProxy("Pamela Anderson");
-        ImageProxy img2 = new ImageProxy("Kim Kardashian");
-        ImageProxy img3 = new ImageProxy("Kirby Griffin");
+        renderDemo();
+        statsDemo();
+         tocDemo();
+    }
 
-        Section playboyS1 = new Section("Front Cover");
-        playboyS1.add(img1);
-        Section playboyS2 = new Section("Summer Girls");
-        playboyS2.add(img2);
-        playboyS2.add(img3);
+    static void renderDemo() {
+        Book b = new Book("Noapte buna, copii!");
+        b.addAuthor(new Author("Radu", "Pavel"));
+        Section cap1 = new Section("Capitolul 1");
+        Section cap11 = new Section("Capitolul 1.1");
+        b.addContent(new Paragraph("Multumesc celor care ..."));
+        b.addContent(cap1);
+        cap1.add(new Paragraph("Moto capitol"));
+        cap1.add(cap11);
+        cap11.add(new Paragraph("Text din 1.1"));
+        b.accept(new RenderContentVisitor());
+    }
+    static void statsDemo() {
+        Section cap1 = new Section("Capitolul 1");
+        cap1.add(new Paragraph("Paragraph 1"));
+        cap1.add(new Paragraph("Paragraph 2"));
+        cap1.add(new Paragraph("Paragraph 3"));
+        cap1.add(new Paragraph("Paragraph 4"));
+        cap1.add(new ImageProxy("ImageOne"));
+        cap1.add(new Image("ImageTwo"));
+        cap1.add(new Paragraph("Some text"));
+        cap1.add(new Table("Table 1"));
 
-        Book playboy = new Book("Playboy");
-        playboy.addContent(playboyS1);
-        playboy.addContent(playboyS2);
-        long endTime = System.currentTimeMillis();
-        System.out.println("Creation of the content took " + (endTime - startTime) + " milliseconds");
+        BookStatistics stats = new BookStatistics();
+        cap1.accept(stats);
+        stats.printStatistics();
+    }
+    static void tocDemo() {
+        Book b = new Book("Noapte buna, copii!");
+        Section cap1 = new Section("Capitolul 1");
+        Section cap11 = new Section("Capitolul 1.1");
+        b.addContent(cap1);
+        cap1.add(cap11);
 
-        startTime = System.currentTimeMillis();
-        playboyS1.print();
-        endTime = System.currentTimeMillis();
-        System.out.println("Printing of the section 1 took " + (endTime - startTime) + " milliseconds");
-
-        startTime = System.currentTimeMillis();
-        playboyS1.print();
-        endTime = System.currentTimeMillis();
-        System.out.println("Printing again the section 1 took " + (endTime - startTime) + " milliseconds");
+        GenerateToC gen = new GenerateToC();
+        b.accept(gen);
+        gen.getToC().render();
     }
 }

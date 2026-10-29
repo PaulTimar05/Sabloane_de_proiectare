@@ -25,8 +25,12 @@ public class ImageProxy extends Element implements Picture {
         return loadImage().content();
     }
 
+    public void render() {
+        loadImage().render();
+    }
+
     @Override
-    public void print() {
-        loadImage().print();
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

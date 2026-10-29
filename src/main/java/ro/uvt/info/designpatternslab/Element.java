@@ -8,7 +8,6 @@ public abstract class Element {
 
     void setParent(Section parent) { this.parent = parent; }
 
-    public abstract void print();
-
+    public abstract void accept(Visitor visitor);
     public void add(Element e)    { throw new UnsupportedOperationException(); }
 }

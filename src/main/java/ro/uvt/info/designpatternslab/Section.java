@@ -1,9 +1,12 @@
 package ro.uvt.info.designpatternslab;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Section extends Element {
+    @Getter
     protected String title;
     protected List<Element> children = new ArrayList<>();
 
@@ -30,11 +33,19 @@ public class Section extends Element {
         return children.get(index);
     }
 
+    public void render() {
+        System.out.println(title);   // doar titlul, copiii îi vizitează accept
+    }
+
     @Override
-    public void print() {
-        System.out.println(title);
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+        acceptChildren(visitor);
+    }
+
+    protected void acceptChildren(Visitor visitor) {
         for (Element e : children) {
-            e.print();
+            e.accept(visitor);
         }
     }
 }
