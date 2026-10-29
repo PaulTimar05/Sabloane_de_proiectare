@@ -3,7 +3,7 @@ package ro.uvt.info.designpatternslab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Section implements Element {
+public class Section extends Element {
     protected String title;
     protected List<Element> children = new ArrayList<>();
 
@@ -13,15 +13,19 @@ public class Section implements Element {
 
     @Override
     public void add(Element e) {
+        if (e.getParent() != null) {
+            throw new IllegalStateException("Elementul are deja un părinte!");
+        }
+        e.setParent(this);
         children.add(e);
     }
 
-    @Override
     public void remove(Element e) {
+        e.setParent(null);
         children.remove(e);
+
     }
 
-    @Override
     public Element get(int index) {
         return children.get(index);
     }
