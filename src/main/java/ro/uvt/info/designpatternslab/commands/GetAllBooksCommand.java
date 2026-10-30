@@ -1,14 +1,14 @@
-// GetAllBooksCommand.java
 package ro.uvt.info.designpatternslab.commands;
 
 import ro.uvt.info.designpatternslab.Book;
-import ro.uvt.info.designpatternslab.persistence.BooksRepository;
+import ro.uvt.info.designpatternslab.persistence.CrudRepository;
+
 import java.util.List;
 
 public class GetAllBooksCommand implements Command<List<Book>> {
-    private final BooksRepository repository;
+    private final CrudRepository<Book, Integer> repository;
 
-    public GetAllBooksCommand(BooksRepository repository) {
+    public GetAllBooksCommand(CrudRepository<Book, Integer> repository) {
         this.repository = repository;
     }
 

@@ -1,13 +1,14 @@
 // DeleteBookCommand.java
 package ro.uvt.info.designpatternslab.commands;
 
-import ro.uvt.info.designpatternslab.persistence.BooksRepository;
+import ro.uvt.info.designpatternslab.Book;
+import ro.uvt.info.designpatternslab.persistence.CrudRepository;
 
 public class DeleteBookCommand implements Command<Boolean> {
-    private final BooksRepository repository;
+    private final CrudRepository<Book, Integer> repository;
     private final int id;
 
-    public DeleteBookCommand(BooksRepository repository, int id) {
+    public DeleteBookCommand(CrudRepository<Book, Integer> repository, int id) {
         this.repository = repository;
         this.id = id;
     }

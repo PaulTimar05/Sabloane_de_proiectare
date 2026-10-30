@@ -3,13 +3,13 @@ package ro.uvt.info.designpatternslab.commands;
 
 import ro.uvt.info.designpatternslab.Book;
 import ro.uvt.info.designpatternslab.models.BookDto;
-import ro.uvt.info.designpatternslab.persistence.BooksRepository;
+import ro.uvt.info.designpatternslab.persistence.CrudRepository;
 
 public class CreateBookCommand implements Command<Book> {
-    private final BooksRepository repository;
+    private final CrudRepository<Book, Integer> repository;
     private final BookDto dto;
 
-    public CreateBookCommand(BooksRepository repository, BookDto dto) {
+    public CreateBookCommand(CrudRepository<Book, Integer> repository, BookDto dto) {
         this.repository = repository;
         this.dto = dto;
     }

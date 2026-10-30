@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.uvt.info.designpatternslab.Book;
 import ro.uvt.info.designpatternslab.commands.*;
 import ro.uvt.info.designpatternslab.models.BookDto;
-import ro.uvt.info.designpatternslab.persistence.BooksRepository;
-
+import ro.uvt.info.designpatternslab.persistence.CrudRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +17,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @RestController
 @RequestMapping("/books")
 public class BooksController {
-    private final BooksRepository repository;
+    private final CrudRepository repository;
     private final SynchronousCommandExecutor syncExecutor;
     private final AsynchronousCommandExecutor asyncExecutor;
 
     private final Map<String, CompletableFuture<Book>> requests = new ConcurrentHashMap<>();
 
-    public BooksController(BooksRepository repository,
+    public BooksController(CrudRepository<Book, Integer> repository,
                            SynchronousCommandExecutor syncExecutor,
                            AsynchronousCommandExecutor asyncExecutor) {
         this.repository = repository;
