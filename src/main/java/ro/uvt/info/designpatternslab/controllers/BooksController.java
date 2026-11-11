@@ -13,22 +13,27 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import ro.uvt.info.designpatternslab.observer.AllBooksSubject;
 
 @RestController
 @RequestMapping("/books")
+
 public class BooksController {
     private final CrudRepository repository;
     private final SynchronousCommandExecutor syncExecutor;
     private final AsynchronousCommandExecutor asyncExecutor;
 
     private final Map<String, CompletableFuture<Book>> requests = new ConcurrentHashMap<>();
+    private final AllBooksSubject allBooksSubject;
 
     public BooksController(CrudRepository<Book, Integer> repository,
                            SynchronousCommandExecutor syncExecutor,
-                           AsynchronousCommandExecutor asyncExecutor) {
+                           AsynchronousCommandExecutor asyncExecutor,
+                           AllBooksSubject allBooksSubject) {
         this.repository = repository;
         this.syncExecutor = syncExecutor;
         this.asyncExecutor = asyncExecutor;
+        this.allBooksSubject = allBooksSubject;
     }
 
     @GetMapping
@@ -45,7 +50,9 @@ public class BooksController {
     @PostMapping
     public ResponseEntity<Map<String, String>> create(@RequestBody BookDto dto) {
         String requestId = UUID.randomUUID().toString();
-        requests.put(requestId, asyncExecutor.execute(new CreateBookCommand(repository, dto)));
+        CompletableFuture<Book> future = asyncExecutor.execute(new CreateBookCommand(repository, dto));
+        future.thenAccept(allBooksSubject::add);   // când cartea e salvată, anunțăm abonații
+        requests.put(requestId, future);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(Map.of("requestId", requestId, "statusUrl", "/books/requests/" + requestId));
     }
@@ -77,4 +84,5 @@ public class BooksController {
         boolean deleted = syncExecutor.execute(new DeleteBookCommand(repository, id)).join();
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
 }
