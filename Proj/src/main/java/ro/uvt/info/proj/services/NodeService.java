@@ -74,4 +74,23 @@ public class NodeService {
         }
         return visitor.getSummary();
     }
+    @Transactional
+    public Task setDone(int id, boolean done) {
+        Node node = getNode(id);
+        if (!(node instanceof Task task)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Doar sarcinile pot fi marcate ca terminate");
+        }
+        task.setDone(done);
+        return repository.save(task);
+    }
+    @Transactional
+    public void deleteNode(int id) {
+        Node node = getNode(id);
+        Category parent = node.getParent();
+        if (parent != null) {
+            parent.remove(node);   // orphanRemoval îl șterge din bază, împreună cu subarborele
+        } else {
+            repository.delete(node);   // nod de nivel superior
+        }
+    }
 }

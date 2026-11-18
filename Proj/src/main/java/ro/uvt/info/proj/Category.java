@@ -13,7 +13,7 @@ import java.util.List;
 public class Category extends Node {
 
     @Getter
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id")
     private List<Node> children = new ArrayList<>();
 
@@ -27,6 +27,10 @@ public class Category extends Node {
         }
         node.setParent(this);
         children.add(node);
+    }
+    public void remove(Node node) {
+        children.remove(node);
+        node.setParent(null);
     }
     @Override
     public String getType() {

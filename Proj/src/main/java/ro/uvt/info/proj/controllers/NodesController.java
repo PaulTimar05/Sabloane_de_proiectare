@@ -2,14 +2,13 @@ package ro.uvt.info.proj.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ro.uvt.info.proj.Category;
 import ro.uvt.info.proj.Task;
 import ro.uvt.info.proj.dto.CreateCategoryRequest;
 import ro.uvt.info.proj.dto.CreateTaskRequest;
+import ro.uvt.info.proj.dto.SetDoneRequest;
 import ro.uvt.info.proj.services.NodeService;
 
 @RestController
@@ -34,5 +33,14 @@ public class NodesController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Titlul este obligatoriu");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createTask(request));
+    }
+    @PatchMapping("/tasks/{id}/done")
+    public Task setDone(@PathVariable int id, @RequestBody SetDoneRequest request) {
+        return service.setDone(id, request.done());
+    }
+    @DeleteMapping("/nodes/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        service.deleteNode(id);
+        return ResponseEntity.noContent().build();
     }
 }

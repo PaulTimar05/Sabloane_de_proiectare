@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List ierarhic</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<h1>To-Do List ierarhic</h1>
+<p id="msg"></p>
+
+<section class="card">
+    <h2>Adaugă</h2>
+    <form id="form" class="form-grid">
+        <label>Tip
+            <select id="type">
+                <option value="category">Categorie / subcategorie</option>
+                <option value="task">Sarcină</option>
+            </select>
+        </label>
+        <label>Părinte
+            <select id="parent"></select>
+        </label>
+        <label class="wide">Titlu
+            <input id="title" placeholder="ex. Recapitulare Visitor" required>
+        </label>
+        <label class="task-only" hidden>Durată (minute)
+            <input id="minutes" type="number" min="0" value="30">
+        </label>
+        <label class="task-only" hidden>Termen
+            <input id="deadline" type="date">
+        </label>
+        <button type="submit" class="primary wide">Adaugă</button>
+    </form>
+</section>
+
+<h2>Arbore</h2>
+<div id="tree"></div>
+
+<section class="card">
+    <h2>Sumar</h2>
+    <pre id="summary">Apasă „Sumar" lângă o categorie sau încarcă totalul.</pre>
+    <button id="allSummary" type="button">Sumar pentru tot</button>
+</section>
+
+
+<script src="index.js"></script>
+</body>
+</html>
