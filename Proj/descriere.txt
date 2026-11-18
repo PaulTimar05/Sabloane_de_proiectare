@@ -1,0 +1,16 @@
+To-Do List ierarhic
+
+Descriere:
+Aplicatie REST (Spring Boot) pentru organizarea sarcinilor sub forma unui arbore: o categorie poate contine subcategorii si sarcini, pe oricate niveluri. Fiecare sarcina are o durata estimata si un deadline.
+
+Structura (arbore):
+Categorie -> [Subcategorie ...] -> Sarcina (titlu, durata in minute, deadline, stare)
+
+Functionalitati:
+- add: adauga categorii, subcategorii si sarcini
+- view: afiseaza arborele complet
+- summary: numar de sarcini, sarcini terminate, minute totale si ramase,
+  sarcini cu deadline depasit
+
+Tehnologii: Spring Boot, Spring Data JPA, H2, HTML + JavaScript
+Design patterns: Composite (arborele), Visitor (summary), Command (operatiile REST), Adapter (stratul de persistenta)

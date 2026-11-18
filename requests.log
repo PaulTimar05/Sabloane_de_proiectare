@@ -1,0 +1,65 @@
+2026-11-11T09:18:37.587+02:00  INFO 486 --- [design-patterns-lab] [main] r.u.i.d.MySpringApplication              : Starting MySpringApplication using Java 17.0.21.0.2 with PID 486 (/Users/paultimar/IdeaProjects/design-patterns-lab/build/classes/java/main started by paultimar in /Users/paultimar/IdeaProjects/design-patterns-lab)
+2026-11-11T09:18:37.590+02:00  INFO 486 --- [design-patterns-lab] [main] r.u.i.d.MySpringApplication              : No active profile set, falling back to 1 default profile: "default"
+2026-11-11T09:18:37.770+02:00  INFO 486 --- [design-patterns-lab] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-11T09:18:37.787+02:00  INFO 486 --- [design-patterns-lab] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 14 ms. Found 2 JPA repository interfaces.
+2026-11-11T09:18:37.928+02:00  INFO 486 --- [design-patterns-lab] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-11-11T09:18:37.933+02:00  INFO 486 --- [design-patterns-lab] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-11T09:18:37.933+02:00  INFO 486 --- [design-patterns-lab] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-11T09:18:37.947+02:00  INFO 486 --- [design-patterns-lab] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 344 ms
+2026-11-11T09:18:38.013+02:00  INFO 486 --- [design-patterns-lab] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-11T09:18:38.043+02:00  INFO 486 --- [design-patterns-lab] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.13.Final
+2026-11-11T09:18:38.199+02:00  INFO 486 --- [design-patterns-lab] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-11T09:18:38.210+02:00  INFO 486 --- [design-patterns-lab] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-11T09:18:38.277+02:00  INFO 486 --- [design-patterns-lab] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:~/h2db/booksdb user=SA
+2026-11-11T09:18:38.277+02:00  INFO 486 --- [design-patterns-lab] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-11T09:18:38.286+02:00  WARN 486 --- [design-patterns-lab] [main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-11T09:18:38.292+02:00  INFO 486 --- [design-patterns-lab] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:file:~/h2db/booksdb]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: BOOKSDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-11T09:18:38.659+02:00  INFO 486 --- [design-patterns-lab] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-11T09:18:38.680+02:00  INFO 486 --- [design-patterns-lab] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-11T09:18:38.704+02:00  INFO 486 --- [design-patterns-lab] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-11T09:18:38.735+02:00  WARN 486 --- [design-patterns-lab] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-11T09:18:38.741+02:00  INFO 486 --- [design-patterns-lab] [main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [public/index.html]
+2026-11-11T09:18:38.812+02:00  INFO 486 --- [design-patterns-lab] [main] o.s.b.h.a.H2ConsoleAutoConfiguration     : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:~/h2db/booksdb'
+2026-11-11T09:18:38.828+02:00  INFO 486 --- [design-patterns-lab] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-11-11T09:18:38.830+02:00  INFO 486 --- [design-patterns-lab] [main] r.u.i.d.MySpringApplication              : Started MySpringApplication in 1.375 seconds (process running for 1.572)
+2026-11-11T09:18:42.177+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-11T09:18:42.177+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-11T09:18:42.178+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-11-11T09:18:42.180+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-1] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /index.html
+2026-11-11T09:18:42.212+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-1] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /index.html -> status 200
+2026-11-11T09:18:42.227+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-2] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /favicon.ico
+2026-11-11T09:18:42.229+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-2] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /favicon.ico -> status 404
+2026-11-11T09:18:44.619+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-3] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /books-sse
+2026-11-11T09:18:44.633+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-3] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /books-sse -> status 200
+2026-11-11T09:18:46.230+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-4] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /.well-known/appspecific/com.chrome.devtools.json
+2026-11-11T09:18:46.232+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-4] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /.well-known/appspecific/com.chrome.devtools.json -> status 404
+2026-11-11T09:18:54.724+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-5] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /books-sse
+2026-11-11T09:18:54.728+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-5] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /books-sse -> status 200
+2026-11-11T09:19:07.103+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-6] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: POST /books
+2026-11-11T09:19:07.136+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-6] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: POST /books -> status 202
+2026-11-11T09:19:20.593+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-8] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /books-sse
+2026-11-11T09:19:20.595+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-8] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /books-sse -> status 200
+2026-11-11T09:19:26.253+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-9] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: POST /books
+2026-11-11T09:19:26.255+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-9] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: POST /books -> status 202
+2026-11-11T09:19:32.715+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-1] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: POST /books
+2026-11-11T09:19:32.717+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-1] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: POST /books -> status 202
+2026-11-11T09:19:35.680+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-3] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /books-sse
+2026-11-11T09:19:35.682+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-3] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /books-sse -> status 200
+2026-11-11T09:19:36.832+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-4] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: POST /books
+2026-11-11T09:19:36.833+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-4] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: POST /books -> status 202
+2026-11-11T09:21:08.205+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-6] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /index.html
+2026-11-11T09:21:08.218+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-6] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /index.html -> status 304
+2026-11-11T09:21:08.240+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-7] r.u.i.d.filters.RequestLoggingFilter     : BEFORE processing: GET /.well-known/appspecific/com.chrome.devtools.json
+2026-11-11T09:21:08.244+02:00  INFO 486 --- [design-patterns-lab] [http-nio-8080-exec-7] r.u.i.d.filters.RequestLoggingFilter     : AFTER processing: GET /.well-known/appspecific/com.chrome.devtools.json -> status 404
+2026-11-11T09:22:07.185+02:00  INFO 486 --- [design-patterns-lab] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
