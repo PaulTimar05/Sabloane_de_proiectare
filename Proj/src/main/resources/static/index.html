@@ -3,144 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>To-Do List ierarhic</title>
-    <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-        ul { list-style: none; padding-left: 1.2rem; border-left: 1px solid #ccc; }
-        .cat { font-weight: bold; }
-        .overdue { color: #b00020; }
-        .done { text-decoration: line-through; color: #777; }
-        label { display: block; margin: .4rem 0; }
-        #msg { color: #b00020; }
-        pre { background: #f4f4f4; padding: .8rem; }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 <h1>To-Do List ierarhic</h1>
 <p id="msg"></p>
 
-<h2>Adaugă</h2>
-<form id="form">
-    <label>Tip:
-        <select id="type">
-            <option value="category">Categorie / subcategorie</option>
-            <option value="task">Sarcină</option>
-        </select>
-    </label>
-    <label>Titlu: <input id="title" required></label>
-    <label>Părinte: <select id="parent"></select></label>
-    <div id="taskFields" hidden>
-        <label>Durată (minute): <input id="minutes" type="number" min="0" value="30"></label>
-        <label>Termen: <input id="deadline" type="date"></label>
-    </div>
-    <button type="submit">Adaugă</button>
-</form>
+<section class="card">
+    <h2>Adaugă</h2>
+    <form id="form" class="form-grid">
+        <label>Tip
+            <select id="type">
+                <option value="category">Categorie / subcategorie</option>
+                <option value="task">Sarcină</option>
+            </select>
+        </label>
+        <label>Părinte
+            <select id="parent"></select>
+        </label>
+        <label class="wide">Titlu
+            <input id="title" placeholder="ex. Recapitulare Visitor" required>
+        </label>
+        <label class="task-only" hidden>Durată (minute)
+            <input id="minutes" type="number" min="0" value="30">
+        </label>
+        <label class="task-only" hidden>Termen
+            <input id="deadline" type="date">
+        </label>
+        <button type="submit" class="primary wide">Adaugă</button>
+    </form>
+</section>
 
 <h2>Arbore</h2>
 <div id="tree"></div>
 
-<h2>Sumar</h2>
-<pre id="summary">Apasă „Sumar" lângă o categorie sau încarcă totalul.</pre>
-<button id="allSummary" type="button">Sumar pentru tot</button>
+<section class="card">
+    <h2>Sumar</h2>
+    <pre id="summary">Apasă „Sumar" lângă o categorie sau încarcă totalul.</pre>
+    <button id="allSummary" type="button">Sumar pentru tot</button>
+</section>
 
-<script>
-    async function api(path, options) {
-        const res = await fetch(path, options);
-        if (!res.ok) throw new Error('Eroare ' + res.status);
-        return res.json();
-    }
 
-    function showError(e) { document.getElementById('msg').textContent = e.message; }
-
-    function renderNode(node) {
-        const li = document.createElement('li');
-        if (node.type === 'category') {
-            const span = document.createElement('span');
-            span.className = 'cat';
-            span.textContent = node.title + ' ';
-            const btn = document.createElement('button');
-            btn.textContent = 'Sumar';
-            btn.onclick = () => loadSummary('/nodes/' + node.id + '/summary', node.title);
-            li.append(span, btn);
-            const ul = document.createElement('ul');
-            node.children.forEach(child => ul.appendChild(renderNode(child)));
-            li.appendChild(ul);
-        } else {
-            const today = new Date().toISOString().slice(0, 10);
-            const overdue = !node.done && node.deadline && node.deadline < today;
-            li.textContent = node.title + ' (' + node.estimatedMinutes + ' min, termen ' + (node.deadline || '-') + ')';
-            if (node.done) li.className = 'done';
-            else if (overdue) li.className = 'overdue';
-        }
-        return li;
-    }
-
-    function fillParents(nodes, depth, select) {
-        nodes.forEach(node => {
-            if (node.type !== 'category') return;
-            const opt = document.createElement('option');
-            opt.value = node.id;
-            opt.textContent = '\u00A0\u00A0'.repeat(depth) + node.title;
-            select.appendChild(opt);
-            fillParents(node.children, depth + 1, select);
-        });
-    }
-
-    async function loadTree() {
-        try {
-            const roots = await api('/nodes');
-            const tree = document.getElementById('tree');
-            tree.replaceChildren();
-            const ul = document.createElement('ul');
-            roots.forEach(root => ul.appendChild(renderNode(root)));
-            tree.appendChild(ul);
-
-            const select = document.getElementById('parent');
-            select.replaceChildren(new Option('- nivel superior -', ''));
-            fillParents(roots, 0, select);
-            showError({ message: '' });
-        } catch (e) { showError(e); }
-    }
-
-    async function loadSummary(path, label) {
-        try {
-            const s = await api(path);
-            document.getElementById('summary').textContent =
-                'Sumar: ' + label + '\n' +
-                'Categorii: ' + s.categories + '\n' +
-                'Sarcini: ' + s.tasks + ' (terminate: ' + s.doneTasks + ')\n' +
-                'Minute totale: ' + s.totalMinutes + ', rămase: ' + s.remainingMinutes + '\n' +
-                'Cu termen depășit: ' + s.overdueTasks;
-        } catch (e) { showError(e); }
-    }
-
-    document.getElementById('type').onchange = e => {
-        document.getElementById('taskFields').hidden = e.target.value !== 'task';
-    };
-
-    document.getElementById('allSummary').onclick = () => loadSummary('/nodes/summary', 'tot');
-
-    document.getElementById('form').onsubmit = async e => {
-        e.preventDefault();
-        const type = document.getElementById('type').value;
-        const parent = document.getElementById('parent').value;
-        const body = { title: document.getElementById('title').value, parentId: parent ? Number(parent) : null };
-        if (type === 'task') {
-            body.estimatedMinutes = Number(document.getElementById('minutes').value);
-            body.deadline = document.getElementById('deadline').value || null;
-        }
-        try {
-            await api(type === 'task' ? '/tasks' : '/categories', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            document.getElementById('form').reset();
-            document.getElementById('taskFields').hidden = true;
-            await loadTree();
-        } catch (err) { showError(err); }
-    };
-
-    loadTree();
-</script>
+<script src="index.js"></script>
 </body>
 </html>
