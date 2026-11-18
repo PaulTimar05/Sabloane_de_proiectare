@@ -13,4 +13,9 @@ Functionalitati:
   sarcini cu deadline depasit
 
 Tehnologii: Spring Boot, Spring Data JPA, H2, HTML + JavaScript
-Design patterns: Composite (arborele), Visitor (summary), Command (operatiile REST), Adapter (stratul de persistenta)
+Design patterns: Composite (arborele de categorii si sarcini),
+Visitor (calculul sumarului)
+
+Rulare: ProjApplication, apoi http://localhost:8081
+Endpoint-uri: POST /categories, POST /tasks, GET /nodes, GET /nodes/{id},
+GET /nodes/summary, GET /nodes/{id}/summary
