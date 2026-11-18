@@ -11,6 +11,8 @@ import ro.uvt.info.proj.dto.CreateCategoryRequest;
 import ro.uvt.info.proj.dto.CreateTaskRequest;
 import ro.uvt.info.proj.persistence.NodeRepository;
 
+import java.util.List;
+
 @Service
 public class NodeService {
     private final NodeRepository repository;
@@ -43,5 +45,15 @@ public class NodeService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Părintele trebuie să fie o categorie");
         }
         category.add(node);   // metoda din etapa model: leagă copilul de părinte
+    }
+    @Transactional(readOnly = true)
+    public List<Node> getRoots() {
+        return repository.findByParentIsNull();
+    }
+
+    @Transactional(readOnly = true)
+    public Node getNode(int id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nodul nu există"));
     }
 }
