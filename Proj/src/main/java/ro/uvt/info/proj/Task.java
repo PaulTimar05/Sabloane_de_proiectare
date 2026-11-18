@@ -21,4 +21,8 @@ public class Task extends Node {
         this.estimatedMinutes = estimatedMinutes;
         this.deadline = deadline;
     }
+    @Override
+    public String getType() {
+        return "task";
+    }
 }

@@ -18,7 +18,7 @@ public abstract class Node {
 
     @Setter
     private String title;
-
+    public abstract String getType();
     protected Node(String title) {
         this.title = title;
     }
@@ -33,4 +33,5 @@ public abstract class Node {
     public Category getParent() {
         return parent;
     }
+
 }

@@ -27,4 +27,9 @@ public class Category extends Node {
         node.setParent(this);
         children.add(node);
     }
+    @Override
+    public String getType() {
+        return "category";
+
+    }
 }
