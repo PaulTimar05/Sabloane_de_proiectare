@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ro.uvt.info.proj.visitor.NodeVisitor;
 
 
 @Entity
@@ -19,6 +20,7 @@ public abstract class Node {
     @Setter
     private String title;
     public abstract String getType();
+    public abstract void accept(NodeVisitor visitor);
     protected Node(String title) {
         this.title = title;
     }

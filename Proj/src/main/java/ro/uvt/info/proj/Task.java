@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ro.uvt.info.proj.visitor.NodeVisitor;
 
 import java.time.LocalDate;
 
@@ -24,5 +25,9 @@ public class Task extends Node {
     @Override
     public String getType() {
         return "task";
+    }
+    @Override
+    public void accept(NodeVisitor visitor) {
+        visitor.visit(this);
     }
 }

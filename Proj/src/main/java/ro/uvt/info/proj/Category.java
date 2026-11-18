@@ -3,6 +3,7 @@ package ro.uvt.info.proj;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ro.uvt.info.proj.visitor.NodeVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +32,12 @@ public class Category extends Node {
     public String getType() {
         return "category";
 
+    }
+    @Override
+    public void accept(NodeVisitor visitor) {
+        visitor.visit(this);
+        for (Node child : children) {
+            child.accept(visitor);
+        }
     }
 }
