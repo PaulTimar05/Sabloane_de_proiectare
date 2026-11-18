@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ro.uvt.info.proj.Node;
 import ro.uvt.info.proj.services.NodeService;
+import ro.uvt.info.proj.visitor.Summary;
 
 import java.util.List;
 
@@ -24,5 +25,14 @@ public class TreeController {
     @GetMapping("/nodes/{id}")
     public Node getSubtree(@PathVariable int id) {
         return service.getNode(id);
+    }
+    @GetMapping("/nodes/summary")
+    public Summary getSummaryOfAll() {
+        return service.getSummaryOfAll();
+    }
+
+    @GetMapping("/nodes/{id}/summary")
+    public Summary getSummary(@PathVariable int id) {
+        return service.getSummary(id);
     }
 }

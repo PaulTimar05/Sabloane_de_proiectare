@@ -10,6 +10,8 @@ import ro.uvt.info.proj.Task;
 import ro.uvt.info.proj.dto.CreateCategoryRequest;
 import ro.uvt.info.proj.dto.CreateTaskRequest;
 import ro.uvt.info.proj.persistence.NodeRepository;
+import ro.uvt.info.proj.visitor.Summary;
+import ro.uvt.info.proj.visitor.SummaryVisitor;
 
 import java.util.List;
 
@@ -55,5 +57,21 @@ public class NodeService {
     public Node getNode(int id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nodul nu există"));
+    }
+    @Transactional(readOnly = true)
+    public Summary getSummary(int id) {
+        Node node = getNode(id);
+        SummaryVisitor visitor = new SummaryVisitor();
+        node.accept(visitor);
+        return visitor.getSummary();
+    }
+
+    @Transactional(readOnly = true)
+    public Summary getSummaryOfAll() {
+        SummaryVisitor visitor = new SummaryVisitor();
+        for (Node root : repository.findByParentIsNull()) {
+            root.accept(visitor);
+        }
+        return visitor.getSummary();
     }
 }
