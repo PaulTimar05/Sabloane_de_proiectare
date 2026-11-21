@@ -32,6 +32,9 @@ public class NodesController {
         if (request.title() == null || request.title().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Titlul este obligatoriu");
         }
+        if (request.estimatedMinutes() != null && request.estimatedMinutes() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Durata nu poate fi negativă");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createTask(request));
     }
     @PatchMapping("/tasks/{id}/done")

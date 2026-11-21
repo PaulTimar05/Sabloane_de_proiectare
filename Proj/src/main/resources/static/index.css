@@ -21,6 +21,11 @@ button.danger:hover { background: #ffebee; }
 ul { list-style: none; padding-left: 1.2rem; border-left: 1px solid #ccc; }
 li { margin: .4rem 0; }
 .cat { font-weight: 600; }
+
+.tree-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.tree-actions { display: flex; gap: .5rem; }
+button.toggle { width: 1.8rem; padding: .2rem 0; font-size: .8rem; text-align: center; }
+.count { color: #777; font-size: .8rem; margin-right: .4rem; }
 .done { text-decoration: line-through; color: #777; }
 
 .badge { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .8rem; }

@@ -21,11 +21,12 @@ public class SummaryVisitor implements NodeVisitor {
     @Override
     public void visit(Task task) {
         tasks++;
-        totalMinutes += task.getEstimatedMinutes();
+        int minutes = task.getEstimatedMinutes() == null ? 0 : task.getEstimatedMinutes();   // durata e opțională
+        totalMinutes += minutes;
         if (task.isDone()) {
             doneTasks++;
         } else {
-            remainingMinutes += task.getEstimatedMinutes();
+            remainingMinutes += minutes;
             if (task.getDeadline() != null && task.getDeadline().isBefore(LocalDate.now())) {
                 overdueTasks++;   // termen depășit și încă nefăcută
             }

@@ -33,19 +33,79 @@ function deleteButton(node) {
     return btn;
 }
 
+// --- stare expand/collapse (păstrată în browser, supraviețuiește reîncărcării) ---
+const COLLAPSED_KEY = 'collapsedCategories';
+let lastRoots = [];
+
+function loadCollapsed() {
+    try { return new Set(JSON.parse(localStorage.getItem(COLLAPSED_KEY) || '[]')); }
+    catch (e) { return new Set(); }
+}
+function saveCollapsed(set) {
+    try { localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...set])); } catch (e) { /* ignorăm */ }
+}
+function collectCategoryIds(nodes, out) {
+    nodes.forEach(n => {
+        if (n.type !== 'category') return;
+        out.push(n.id);
+        collectCategoryIds(n.children, out);
+    });
+    return out;
+}
+function setAllCollapsed(collapsed) {
+    saveCollapsed(collapsed ? new Set(collectCategoryIds(lastRoots, [])) : new Set());
+    renderTree();
+}
+
+// Nefăcutele (și categoriile) primele, sarcinile făcute la final; ordinea relativă rămâne neschimbată.
+function sortChildren(children) {
+    const isDoneTask = n => n.type === 'task' && n.done ? 1 : 0;
+    return children
+        .map((node, index) => ({ node, index }))
+        .sort((a, b) => isDoneTask(a.node) - isDoneTask(b.node) || a.index - b.index)
+        .map(x => x.node);
+}
+
+function describeTask(node) {
+    const parts = [];
+    if (node.estimatedMinutes != null) parts.push(node.estimatedMinutes + ' min');
+    if (node.deadline) parts.push('termen ' + node.deadline);
+    return node.title + (parts.length ? ' (' + parts.join(', ') + ')' : '');
+}
+
 function renderNode(node) {
     const li = document.createElement('li');
     if (node.type === 'category') {
+        const collapsed = loadCollapsed();
+        const isCollapsed = collapsed.has(node.id);
+
+        const toggle = document.createElement('button');
+        toggle.className = 'toggle';
+        toggle.textContent = isCollapsed ? '▸' : '▾';
+        toggle.title = isCollapsed ? 'Extinde' : 'Restrânge';
+        toggle.onclick = () => {
+            const set = loadCollapsed();
+            if (set.has(node.id)) set.delete(node.id); else set.add(node.id);
+            saveCollapsed(set);
+            renderTree();
+        };
+
         const span = document.createElement('span');
         span.className = 'cat';
         span.textContent = node.title + ' ';
+        const count = document.createElement('span');
+        count.className = 'count';
+        const tasks = node.children.filter(c => c.type === 'task');
+        count.textContent = '(' + tasks.filter(t => t.done).length + '/' + tasks.length + ')';
         const btn = document.createElement('button');
         btn.textContent = 'Sumar';
         btn.onclick = () => loadSummary('/nodes/' + node.id + '/summary', node.title);
-        li.append(span, btn, ' ', deleteButton(node));
-        const ul = document.createElement('ul');
-        node.children.forEach(child => ul.appendChild(renderNode(child)));
-        li.appendChild(ul);
+        li.append(toggle, ' ', span, count, btn, ' ', deleteButton(node));
+        if (!isCollapsed) {
+            const ul = document.createElement('ul');
+            sortChildren(node.children).forEach(child => ul.appendChild(renderNode(child)));
+            li.appendChild(ul);
+        }
     } else {
         const today = new Date().toISOString().slice(0, 10);
         const overdue = !node.done && node.deadline && node.deadline < today;
@@ -55,7 +115,7 @@ function renderNode(node) {
         badge.textContent = node.done ? 'Gata' : overdue ? 'Întârziată' : 'În lucru';
 
         const title = document.createElement('span');
-        title.textContent = node.title + ' (' + node.estimatedMinutes + ' min, termen ' + (node.deadline || '-') + ')';
+        title.textContent = describeTask(node);
         if (node.done) title.className = 'done';
 
         const btn = document.createElement('button');
@@ -77,18 +137,25 @@ function fillParents(nodes, depth, select) {
     });
 }
 
+function renderTree() {
+    const tree = document.getElementById('tree');
+    tree.replaceChildren();
+    const ul = document.createElement('ul');
+    sortChildren(lastRoots).forEach(root => ul.appendChild(renderNode(root)));
+    tree.appendChild(ul);
+}
+
 async function loadTree() {
     try {
         const roots = await api('/nodes');
-        const tree = document.getElementById('tree');
-        tree.replaceChildren();
-        const ul = document.createElement('ul');
-        roots.forEach(root => ul.appendChild(renderNode(root)));
-        tree.appendChild(ul);
+        lastRoots = roots;
+        renderTree();
 
         const select = document.getElementById('parent');
+        const selected = select.value;
         select.replaceChildren(new Option('- nivel superior -', ''));
         fillParents(roots, 0, select);
+        select.value = selected;   // păstrează părintele ales după reîncărcare
         showError({ message: '' });
     } catch (e) { showError(e); }
 }
@@ -110,6 +177,8 @@ document.getElementById('type').onchange = e => {
 };
 
 document.getElementById('allSummary').onclick = () => loadSummary('/nodes/summary', 'tot');
+document.getElementById('expandAll').onclick = () => setAllCollapsed(false);
+document.getElementById('collapseAll').onclick = () => setAllCollapsed(true);
 
 document.getElementById('form').onsubmit = async e => {
     e.preventDefault();
@@ -117,8 +186,9 @@ document.getElementById('form').onsubmit = async e => {
     const parent = document.getElementById('parent').value;
     const body = { title: document.getElementById('title').value, parentId: parent ? Number(parent) : null };
     if (type === 'task') {
-        body.estimatedMinutes = Number(document.getElementById('minutes').value);
-        body.deadline = document.getElementById('deadline').value || null;
+        const minutes = document.getElementById('minutes').value;
+        body.estimatedMinutes = minutes === '' ? null : Number(minutes);   // opțional
+        body.deadline = document.getElementById('deadline').value || null;  // opțional
     }
     try {
         await api(type === 'task' ? '/tasks' : '/categories', {

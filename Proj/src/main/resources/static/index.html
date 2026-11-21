@@ -24,17 +24,23 @@
         <label class="wide">Titlu
             <input id="title" placeholder="ex. Recapitulare Visitor" required>
         </label>
-        <label class="task-only" hidden>Durată (minute)
-            <input id="minutes" type="number" min="0" value="30">
+        <label class="task-only" hidden>Durată (minute, opțional)
+            <input id="minutes" type="number" min="0" placeholder="ex. 30">
         </label>
-        <label class="task-only" hidden>Termen
+        <label class="task-only" hidden>Termen (opțional)
             <input id="deadline" type="date">
         </label>
         <button type="submit" class="primary wide">Adaugă</button>
     </form>
 </section>
 
-<h2>Arbore</h2>
+<div class="tree-header">
+    <h2>Arbore</h2>
+    <div class="tree-actions">
+        <button id="expandAll" type="button">Extinde tot</button>
+        <button id="collapseAll" type="button">Restrânge tot</button>
+    </div>
+</div>
 <div id="tree"></div>
 
 <section class="card">

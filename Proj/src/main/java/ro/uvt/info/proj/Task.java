@@ -13,11 +13,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class Task extends Node {
-    private int estimatedMinutes;
-    private LocalDate deadline;
+    private Integer estimatedMinutes;   // opțional (null = necunoscută)
+    private LocalDate deadline;         // opțional
     private boolean done;
 
-    public Task(String title, int estimatedMinutes, LocalDate deadline) {
+    public Task(String title, Integer estimatedMinutes, LocalDate deadline) {
         super(title);
         this.estimatedMinutes = estimatedMinutes;
         this.deadline = deadline;
