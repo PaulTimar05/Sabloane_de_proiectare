@@ -21,6 +21,8 @@ button.danger:hover { background: #ffebee; }
 ul { list-style: none; padding-left: 1.2rem; border-left: 1px solid #ccc; }
 li { margin: .4rem 0; }
 .cat { font-weight: 600; }
+.cat.clickable { cursor: pointer; }
+.cat.clickable:hover { text-decoration: underline; color: #1976d2; }
 
 .tree-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .tree-actions { display: flex; gap: .5rem; }

@@ -73,11 +73,37 @@ function describeTask(node) {
     return node.title + (parts.length ? ' (' + parts.join(', ') + ')' : '');
 }
 
-function renderNode(node) {
+// --- vizualizare focalizată pe o categorie (starea e în hash-ul URL-ului: #cat-ID) ---
+function currentFocusId() {
+    const m = location.hash.match(/^#cat-(\d+)$/);
+    return m ? Number(m[1]) : null;
+}
+function setFocus(id) {
+    location.hash = id == null ? '' : '#cat-' + id;   // hashchange → renderTree()
+}
+function findNode(nodes, id) {
+    for (const n of nodes) {
+        if (n.id === id) return n;
+        const found = n.type === 'category' ? findNode(n.children, id) : null;
+        if (found) return found;
+    }
+    return null;
+}
+
+// Deschide formularul „Adaugă" prepopulat: sarcină nouă în categoria dată.
+function addTaskIn(node) {
+    document.getElementById('type').value = 'task';
+    updateTaskFields();
+    document.getElementById('parent').value = String(node.id);
+    document.getElementById('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('title').focus();
+}
+
+function renderNode(node, forceOpen = false) {
     const li = document.createElement('li');
     if (node.type === 'category') {
         const collapsed = loadCollapsed();
-        const isCollapsed = collapsed.has(node.id);
+        const isCollapsed = !forceOpen && collapsed.has(node.id);
 
         const toggle = document.createElement('button');
         toggle.className = 'toggle';
@@ -91,8 +117,10 @@ function renderNode(node) {
         };
 
         const span = document.createElement('span');
-        span.className = 'cat';
+        span.className = 'cat clickable';
+        span.title = 'Deschide doar această categorie';
         span.textContent = node.title + ' ';
+        span.onclick = () => setFocus(node.id);
         const count = document.createElement('span');
         count.className = 'count';
         const tasks = node.children.filter(c => c.type === 'task');
@@ -100,7 +128,11 @@ function renderNode(node) {
         const btn = document.createElement('button');
         btn.textContent = 'Sumar';
         btn.onclick = () => loadSummary('/nodes/' + node.id + '/summary', node.title);
-        li.append(toggle, ' ', span, count, btn, ' ', deleteButton(node));
+        const plus = document.createElement('button');
+        plus.textContent = '+';
+        plus.title = 'Adaugă sarcină în această categorie';
+        plus.onclick = () => addTaskIn(node);
+        li.append(toggle, ' ', span, count, btn, ' ', plus, ' ', deleteButton(node));
         if (!isCollapsed) {
             const ul = document.createElement('ul');
             sortChildren(node.children).forEach(child => ul.appendChild(renderNode(child)));
@@ -140,10 +172,22 @@ function fillParents(nodes, depth, select) {
 function renderTree() {
     const tree = document.getElementById('tree');
     tree.replaceChildren();
+    const focusId = currentFocusId();
+    const focus = focusId == null ? null : findNode(lastRoots, focusId);
     const ul = document.createElement('ul');
-    sortChildren(lastRoots).forEach(root => ul.appendChild(renderNode(root)));
+    if (focus && focus.type === 'category') {
+        const back = document.createElement('button');
+        back.textContent = '← Înapoi la arbore';
+        back.onclick = () => setFocus(null);
+        tree.appendChild(back);
+        ul.appendChild(renderNode(focus, true));
+    } else {
+        sortChildren(lastRoots).forEach(root => ul.appendChild(renderNode(root)));
+    }
     tree.appendChild(ul);
 }
+
+window.addEventListener('hashchange', renderTree);
 
 async function loadTree() {
     try {
@@ -172,9 +216,11 @@ async function loadSummary(path, label) {
     } catch (e) { showError(e); }
 }
 
-document.getElementById('type').onchange = e => {
-    document.querySelectorAll('.task-only').forEach(el => el.hidden = e.target.value !== 'task');
-};
+function updateTaskFields() {
+    const isTask = document.getElementById('type').value === 'task';
+    document.querySelectorAll('.task-only').forEach(el => el.hidden = !isTask);
+}
+document.getElementById('type').onchange = updateTaskFields;
 
 document.getElementById('allSummary').onclick = () => loadSummary('/nodes/summary', 'tot');
 document.getElementById('expandAll').onclick = () => setAllCollapsed(false);
@@ -196,7 +242,10 @@ document.getElementById('form').onsubmit = async e => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         });
-        document.querySelectorAll('.task-only').forEach(el => el.hidden = true);
+        // golim doar Titlu, Durată și Termen; Tip și Părinte rămân, iar câmpurile opționale rămân vizibile
+        document.getElementById('title').value = '';
+        document.getElementById('minutes').value = '';
+        document.getElementById('deadline').value = '';
         document.getElementById('title').focus();
         await loadTree();
     } catch (err) { showError(err); }
